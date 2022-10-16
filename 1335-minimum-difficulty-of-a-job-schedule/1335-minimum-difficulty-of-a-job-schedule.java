@@ -4,34 +4,26 @@ class Solution {
         if (d > n) {
             return -1;
         }
-        Integer[][][] dp = new Integer[d + 1][n + 1][n];
-        return minD(jobDifficulty, d, 1, 0, dp);
+        Integer[][] dp = new Integer[d + 1][n];
+        return minD(jobDifficulty, d, 0, dp);
     }
-    public int minD(int[] jobDifficulty, int d, int i, int j, Integer[][][] dp) {
-        if (d == 0 && i == jobDifficulty.length + 1) {
+    public int minD(int[] jobDifficulty, int d, int i, Integer[][] dp) {
+        if (d == 0 && i == jobDifficulty.length) {
             return 0;
         }
-        if (d == 0 && i != jobDifficulty.length + 1) {
+        if (d < 0 || i == jobDifficulty.length) {
             return 1000000;
         }
-        if (i == jobDifficulty.length + 1) {
-            return 1000000;
-        }
-        if (dp[d][i][j] != null) {
-            return dp[d][i][j];
+        if (dp[d][i] != null) {
+            return dp[d][i];
         }
         
-        int inc = max(jobDifficulty, j, i) + minD(jobDifficulty, d - 1, i + 1, i, dp);
-        int exc = minD(jobDifficulty, d, i + 1, j, dp);
-        return dp[d][i][j] = Math.min(inc, exc);
-    }
-    public int max(int[] jobDifficulty, int i, int j) {
         int max = 0;
-        for (; i < j; i++) {
-            if (max < jobDifficulty[i]) {
-                max = jobDifficulty[i];
-            }
+        int res = Integer.MAX_VALUE;
+        for (int k = i; k < jobDifficulty.length; k++) {
+            max = Math.max(max, jobDifficulty[k]);
+            res = Math.min(res, max + minD(jobDifficulty, d - 1, k + 1, dp));
         }
-        return max;
+        return dp[d][i] = res;
     }
 }
