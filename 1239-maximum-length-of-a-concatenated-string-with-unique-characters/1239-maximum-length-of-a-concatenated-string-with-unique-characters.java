@@ -1,43 +1,29 @@
 class Solution {
+    int maxL = 0;
     public int maxLength(List<String> arr) {
-        return solve(arr, 0, "");
-    }
-    
-    
-    public int solve(List<String> arr, int i, String soFar)
-    {
-        if(i == arr.size())
-        {
-            if(isValid(soFar))
-            {
-                return soFar.length();
-            }
-            return 0;
+        if (arr.size() == 1) {
+            return find(arr.get(0));
         }
-        
-        int size1 = solve(arr, i+1, soFar);
-        int size2 = solve(arr, i+1, soFar+arr.get(i));
-        
-        return Math.max(size1, size2);
-
+        maximumL(arr, "", 0);
+        return maxL;
     }
-    
-    
-    public boolean isValid(String s)
-    {
+    public void maximumL(List<String> arr, String ans, int idx) {
+        maxL = Math.max(maxL, find(ans));
+        for (int i = idx; i < arr.size(); i++) {
+            maximumL(arr, ans + arr.get(i), i + 1);
+        }
+    }
+    public int find(String ans) {
         int[] freq = new int[26];
-        
-        for(int i=0;i<s.length();i++)
-        {
-            int val = s.charAt(i) - 'a';
-            freq[val]++;
-            
-            if(freq[val]>1)
-            {
-                return false;
+        int count = 0;
+        for (int i = 0; i < ans.length(); i++) {
+            int c = ans.charAt(i) - 'a';
+            count++;
+            freq[c]++;
+            if (freq[c] == 2) {
+                return 0;
             }
         }
-        
-        return true;
+        return count;
     }
 }
