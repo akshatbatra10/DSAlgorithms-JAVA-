@@ -9,9 +9,11 @@ class Solution {
     }
     public void maximumL(List<String> arr, String ans, int idx) {
         maxL = Math.max(maxL, find(ans));
-        for (int i = idx; i < arr.size(); i++) {
-            maximumL(arr, ans + arr.get(i), i + 1);
+        if (idx == arr.size()) {
+            return;
         }
+        maximumL(arr, ans + arr.get(idx), idx + 1);
+        maximumL(arr, ans, idx + 1);
     }
     public int find(String ans) {
         int[] freq = new int[26];
