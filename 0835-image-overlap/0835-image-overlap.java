@@ -1,7 +1,7 @@
 class Solution {
     public int largestOverlap(int[][] img1, int[][] img2) {
         int n = img1.length;
-        int[][] temp = new int[2 * n + 1][2 * n + 1];
+        int[][] temp = new int[2 * n][2 * n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (img1[i][j] == 1) {
