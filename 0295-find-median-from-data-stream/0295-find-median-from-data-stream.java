@@ -22,9 +22,7 @@ class MedianFinder {
     
     public double findMedian() {
         if (pq1.size() == pq2.size()) {
-            int a = pq1.peek();
-            int b = pq2.peek();
-            return (1.0 * (a + b)) / 2;
+            return (1.0 * (pq1.peek() + pq2.peek())) / 2;
         } else {
             return pq1.peek();
         }
