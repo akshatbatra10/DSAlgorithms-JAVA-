@@ -1,11 +1,7 @@
 class Solution {
     public int removeStones(int[][] stones) {
-        int n = stones.length;
-        if (n <= 1) {
-            return 0;
-        }
-        
         HashMap<Integer, HashSet<Integer>> graph = new HashMap<>();
+        int n = stones.length;
         for (int i = 0; i < n; i++) {
             graph.put(i, new HashSet<>());
         }
@@ -20,6 +16,7 @@ class Solution {
             }
         }
         
+        Stack<Integer> st = new Stack<>();
         boolean[] visited = new boolean[n];
         int ans = 0;
                 
@@ -27,20 +24,21 @@ class Solution {
             if (visited[i]) {
                 continue;
             }
-            dfs(graph, visited, i);
+            st.push(i);
+            while (!st.isEmpty()) {
+                int re = st.pop();
+                if (visited[re]) {
+                    continue;
+                }
+                visited[re] = true;
+                for (int nbrs : graph.get(re)) {
+                    if (!visited[nbrs]) {
+                        st.push(nbrs);
+                    }
+                }
+            }
             ans++;
         }
         return n - ans;
-    }
-    public void dfs(HashMap<Integer, HashSet<Integer>> graph, boolean[] visited, int start) {
-        visited[start] = true;
-        
-        for (int nbrs : graph.get(start)) {
-            if (visited[nbrs]) {
-                continue;
-            }
-
-            dfs(graph, visited, nbrs);
-        }
     }
 }
