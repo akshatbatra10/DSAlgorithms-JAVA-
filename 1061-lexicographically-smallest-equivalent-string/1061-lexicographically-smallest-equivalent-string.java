@@ -1,44 +1,43 @@
 class Solution {
+    int representative[] = new int[26];
+
+    int find(int x) {
+        if (representative[x] == x) {
+            return x;
+        }
+
+        return representative[x] = find(representative[x]);
+    }
+
+    void performUnion(int x, int y) {
+        x = find(x);
+        y = find(y);
+
+        if (x == y) {
+            return;
+        }
+
+        if (x < y) {
+            representative[y] = x;
+        } else {
+            representative[x] = y;
+        }
+    }
+
     public String smallestEquivalentString(String s1, String s2, String baseStr) {
-        HashMap<Character, ArrayList<Character>> graph = new HashMap<>();
+        for (int i = 0; i < 26; i++) {
+            representative[i] = i;
+        }
+
         for (int i = 0; i < s1.length(); i++) {
-            char s1C = s1.charAt(i);
-            char s2C = s2.charAt(i);
-            if (!graph.containsKey(s1C))
-                graph.put(s1C, new ArrayList<>());
-            if (!graph.containsKey(s2C))
-                graph.put(s2C, new ArrayList<>());
-            graph.get(s1C).add(s2C);
-            graph.get(s2C).add(s1C);
+            performUnion(s1.charAt(i) - 'a', s2.charAt(i) - 'a');
         }
-        Queue<Character> queue = new LinkedList<>();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < baseStr.length(); i++) {
-            HashSet<Character> visited = new HashSet<>();
-            char ch = baseStr.charAt(i);
-            if (!graph.containsKey(ch)) {
-                sb.append(ch);
-                continue;
-            }
-            queue.add(ch);
-            char min = ch;
-            while (!queue.isEmpty()) {
-                char c = queue.remove();
-                if (visited.contains(c)) {
-                    continue;
-                }
-                visited.add(c);
-                if (c < min) {
-                    min = c;
-                }
-                for (char nbrs : graph.get(c)) {
-                    if (!visited.contains(nbrs)) {
-                        queue.add(nbrs);
-                    }
-                }
-            }
-            sb.append(min);
+
+        String ans = "";
+        for (char c : baseStr.toCharArray()) {
+            ans += (char)(find(c - 'a') + 'a');
         }
-        return sb.toString();
+
+        return ans;
     }
 }
