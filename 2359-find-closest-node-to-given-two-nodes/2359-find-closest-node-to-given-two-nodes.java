@@ -1,10 +1,27 @@
 class Solution {
-    public void dfs(int node, int[] edges, int[] dist, Boolean[] visit) {
-        visit[node] = true;
-        int neighbor = edges[node];
-        if (neighbor != -1 && !visit[neighbor]) {
-            dist[neighbor] = 1 + dist[node];
-            dfs(neighbor, edges, dist, visit);
+    public void bfs(int startNode, int[] edges, int[] dist) {
+        int n = edges.length;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(startNode);
+
+        Boolean[] visit = new Boolean[n];
+        Arrays.fill(visit, Boolean.FALSE);
+        dist[startNode] = 0;
+
+        while (!q.isEmpty()) {
+            int node = q.poll();
+
+            if (visit[node]) {
+                continue;
+            }
+
+            visit[node] = true;
+            int neighbor = edges[node];
+            if (neighbor != -1 && !visit[neighbor]) {
+                dist[neighbor] = 1 + dist[node];
+                q.offer(neighbor);
+            }
+
         }
     }
 
@@ -13,15 +30,9 @@ class Solution {
         int[] dist1 = new int[n], dist2 = new int[n];
         Arrays.fill(dist1, Integer.MAX_VALUE);
         Arrays.fill(dist2, Integer.MAX_VALUE);
-        dist1[node1] = 0;
-        dist2[node2] = 0;
 
-        Boolean[] visit1 = new Boolean[n], visit2 = new Boolean[n];
-        Arrays.fill(visit1, Boolean.FALSE);
-        Arrays.fill(visit2, Boolean.FALSE);
-
-        dfs(node1, edges, dist1, visit1);
-        dfs(node2, edges, dist2, visit2);
+        bfs(node1, edges, dist1);
+        bfs(node2, edges, dist2);
 
         int minDistNode = -1, minDistTillNow = Integer.MAX_VALUE;
         for (int currNode = 0; currNode < n; currNode++) {
