@@ -6,15 +6,15 @@ class Solution {
         int max = 0;
         while (ei < fruits.length) {
             fruit.put(fruits[ei], fruit.getOrDefault(fruits[ei], 0) + 1);
-            if (fruit.size() > 2) {
+            while (fruit.size() > 2) {
                 fruit.put(fruits[si], fruit.get(fruits[si]) - 1);
                 if (fruit.get(fruits[si]) == 0)
                     fruit.remove(fruits[si]);
                 si++;
             }
             ei++;
-            //max = Math.max(max, ei - si);
+            max = Math.max(max, ei - si);
         }
-        return ei - si;
+        return max;
     }
 }
