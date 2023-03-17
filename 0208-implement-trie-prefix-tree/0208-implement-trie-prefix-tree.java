@@ -1,24 +1,59 @@
 class Trie {
-    HashSet<String> hs;
-    public Trie() {
-        hs=new HashSet<>();
-    }
-    
-    public void insert(String word) {
-        hs.add(word);
-    }
-    
-    public boolean search(String word) {
-        if(hs.contains(word))
-            return true;
-        return false;
-    }
-    
-    public boolean startsWith(String prefix) {
-        for(String it:hs){
-            if(it.startsWith(prefix))
-                return true;
+
+    private TriesNode rootNode; 
+
+    class TriesNode{
+
+        private char key;
+        private boolean isEnd;
+
+        private Map<Character,TriesNode> preFixMap;
+
+        public TriesNode(char key){
+            this.key = key;
+            preFixMap = new HashMap<>();
         }
-        return false;
+    }
+
+    public Trie() {
+        rootNode = new TriesNode('/');
+    }
+
+    public void insert(String word) {
+
+        TriesNode tempNode = rootNode;
+        for(int i = 0 ; i <word.length();i++){
+              char c = word.charAt(i);
+              TriesNode findNode = tempNode.preFixMap.get(c);
+              if(findNode == null){
+                  findNode=new TriesNode(c);
+                  tempNode.preFixMap.put(c,findNode);
+              }
+             tempNode = findNode;
+        }
+        tempNode.isEnd = true;
+
+    }
+
+    public boolean search(String word) {
+        TriesNode searchNode = searchHelper(word);
+        return searchNode != null && searchNode.isEnd; 
+    }
+
+    public boolean startsWith(String prefix) {
+          return searchHelper(prefix) != null;
+    }
+    public TriesNode searchHelper(String word){
+
+          TriesNode tempNode = rootNode; 
+         for(int i = 0 ; i <word.length();i++){
+              char c = word.charAt(i);
+              TriesNode findNode = tempNode.preFixMap.get(c);
+              if(findNode == null){
+                  return null;
+              }
+             tempNode = findNode;
+        }
+        return tempNode;
     }
 }
