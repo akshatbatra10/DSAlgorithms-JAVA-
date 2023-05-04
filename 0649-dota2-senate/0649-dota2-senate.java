@@ -1,61 +1,31 @@
 class Solution {
-    public boolean ban(StringBuilder senateArray, char toBan, int startAt) {
-
-        boolean loopAround = false;
-        int pointer = startAt;
-
-        while (true) {
-            if (pointer == 0) {
-                loopAround = true;
-            }
-            if (senateArray.charAt(pointer) == toBan) {
-                senateArray.deleteCharAt(pointer);
-                break;
-            }
-            pointer = (pointer + 1) % senateArray.length();
-        }
-
-        return loopAround;
-    }
-
     public String predictPartyVictory(String senate) {
+        
+        int n = senate.length();
 
-        StringBuilder senateArray = new StringBuilder(senate);
+        Queue<Integer> rQueue = new LinkedList<>();
+        Queue<Integer> dQueue = new LinkedList<>();
 
-        int rCount = 0;
-        int dCount = 0;
-        for (int i = 0; i < senateArray.length(); i++) {
-            if (senateArray.charAt(i) == 'R') {
-                rCount++;
+        for (int i = 0; i < n; i++) {
+            if (senate.charAt(i) == 'R') {
+                rQueue.add(i);
             } else {
-                dCount++;
+                dQueue.add(i);
             }
         }
 
-        int turn = 0;
+        while (!rQueue.isEmpty() && !dQueue.isEmpty()) {
+            
+            int rTurn = rQueue.poll();
+            int dTurn = dQueue.poll();
 
-        while (rCount > 0 && dCount > 0) {
-            if (senateArray.charAt(turn) == 'R') {
-                boolean bannedSenatorBefore = ban(senateArray, 'D', (turn + 1) % senateArray.length());
-                if (bannedSenatorBefore) {
-                    turn--;
-                }
-                dCount--;
+            if (dTurn < rTurn) {
+                dQueue.add(dTurn + n);
             } else {
-                boolean bannedSenatorBefore = ban(senateArray, 'R', (turn + 1) % senateArray.length());
-                if (bannedSenatorBefore) {
-                    turn--;
-                }
-                rCount--;
+                rQueue.add(rTurn + n);
             }
-
-            turn = (turn + 1) % senateArray.length();
         }
 
-        if (rCount > 0) {
-            return "Radiant";
-        } else {
-            return "Dire";
-        }
+        return rQueue.isEmpty() ? "Dire" : "Radiant";
     }
 }
