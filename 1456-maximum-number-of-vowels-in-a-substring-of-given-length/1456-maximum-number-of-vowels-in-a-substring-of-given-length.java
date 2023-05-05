@@ -1,19 +1,29 @@
 class Solution {
     public int maxVowels(String s, int k) {
-        Set<Character> vowels = Set.of('a', 'e', 'i', 'o', 'u');
+        int maxCount = 0;
+        int currCount = 0;
+        int i = 0;
         
-        int count = 0;
-        for (int i = 0; i < k; i++) {
-            count += vowels.contains(s.charAt(i)) ? 1 : 0;
-        }
-        int answer = count;
-        
-        for (int i = k; i < s.length(); i++) {
-            count += vowels.contains(s.charAt(i)) ? 1 : 0;
-            count -= vowels.contains(s.charAt(i - k)) ? 1 : 0;
-            answer = Math.max(answer, count);
+        for (; i < k; i++) {
+            if (s.charAt(i) == 'a' || s.charAt(i) == 'e' || s.charAt(i) == 'i' || s.charAt(i) == 'o' || s.charAt(i) == 'u') {
+                maxCount++;
+            }
         }
         
-        return answer;
+        int si = 0;
+        currCount = maxCount;
+        
+        for (; i < s.length(); i++) {
+            if (s.charAt(i) == 'a' || s.charAt(i) == 'e' || s.charAt(i) == 'i' || s.charAt(i) == 'o' || s.charAt(i) == 'u') {
+                currCount++;
+            }
+            if (s.charAt(si) == 'a' || s.charAt(si) == 'e' || s.charAt(si) == 'i' || s.charAt(si) == 'o' || s.charAt(si) == 'u') {
+                currCount--;
+            }
+            si++;
+            maxCount = Math.max(maxCount, currCount);
+        }
+        
+        return maxCount;
     }
 }
