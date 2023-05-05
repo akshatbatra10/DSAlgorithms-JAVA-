@@ -5,7 +5,8 @@ class Solution {
         int i = 0;
         
         for (; i < k; i++) {
-            if (s.charAt(i) == 'a' || s.charAt(i) == 'e' || s.charAt(i) == 'i' || s.charAt(i) == 'o' || s.charAt(i) == 'u') {
+            char ch = s.charAt(i);
+            if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
                 maxCount++;
             }
         }
@@ -14,10 +15,12 @@ class Solution {
         currCount = maxCount;
         
         for (; i < s.length(); i++) {
-            if (s.charAt(i) == 'a' || s.charAt(i) == 'e' || s.charAt(i) == 'i' || s.charAt(i) == 'o' || s.charAt(i) == 'u') {
+            char ch = s.charAt(i);
+            if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
                 currCount++;
             }
-            if (s.charAt(si) == 'a' || s.charAt(si) == 'e' || s.charAt(si) == 'i' || s.charAt(si) == 'o' || s.charAt(si) == 'u') {
+            char c = s.charAt(si);
+            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
                 currCount--;
             }
             si++;
